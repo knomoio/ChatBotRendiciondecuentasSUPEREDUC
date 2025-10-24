@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChatBot Rendiciones SLEP</title>
+  <title>Asistente de Rendiciones SLEP</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
@@ -16,6 +16,10 @@
     .chat-input { flex: 1; padding: 10px; font-size: 1em; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
     .chat-submit { padding: 10px 20px; font-size: 1em; border: none; background: #0055a5; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
     .chat-submit:hover { background: #004080; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table, th, td { border: 1px solid #ccc; }
+    th, td { padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
   </style>
 </head>
 <body>
@@ -32,18 +36,25 @@
     const form = document.getElementById('chat-form');
     const input = document.getElementById('chat-input');
 
-    const respuestas = {
-      "vestuario escolar": "No es posible imputar gastos de vestuario escolar con recursos SEP, según el Manual de Cuentas 2025 (p. 18, ítem 21504).",
-      "reparaciones de muebles": "Puedes imputar reparaciones de muebles bajo el código 230305 (Reparaciones menores de infraestructura, mobiliario o equipamiento).",
-      "plazo de rendición": "El plazo general para rendir recursos del año anterior es hasta el 31 de marzo del año siguiente. Verifica en el sitio de Supereduc: [https://ptf.supereduc.cl](https://ptf.supereduc.cl)",
-      "documentos válidos": "Los documentos válidos para respaldar gastos incluyen facturas electrónicas, boletas honorarios y documentos tributarios autorizados. Ver Manual de Usuario Capítulo IV (Honorarios)."
-    };
+    let faqList = [];
+
+    // Cargar el archivo JSON con las preguntas frecuentes
+    fetch('data/faq.json')
+      .then(response => response.json())
+      .then(json => {
+        faqList = json;
+      })
+      .catch(err => {
+        console.error('Error cargando FAQ:', err);
+        // Si no se carga, aún el bot puede funcionar con mensaje de “no disponible”
+      });
 
     form.onsubmit = e => {
       e.preventDefault();
-      const pregunta = input.value;
-      appendChat('Tú', pregunta, 'user');
-      responder(pregunta.toLowerCase());
+      const preguntaRaw = input.value.trim();
+      const pregunta = preguntaRaw.toLowerCase();
+      appendChat('Tú', preguntaRaw, 'user');
+      responder(pregunta);
       input.value = '';
     };
 
@@ -55,15 +66,27 @@
       log.scrollTop = log.scrollHeight;
     }
 
-    function responder(texto) {
-      let respuesta = 'Lo siento, no tengo una respuesta para eso todavía. Consulta el Manual de Cuentas en https://ptf.supereduc.cl';
-      for (let clave in respuestas) {
-        if (texto.includes(clave)) {
-          respuesta = respuestas[clave];
-          break;
-        }
+    function responder(pregunta) {
+      let respuestaHTML = 'Lo siento, no tengo una respuesta para eso todavía. Consulta el Manual de Cuentas o contacta al encargado de rendiciones.';
+
+      // Buscar coincidencia en faqList
+      const item = faqList.find(f =>
+        pregunta.includes(f.pregunta.toLowerCase()) ||
+        pregunta.includes(f.subvencion.toLowerCase()) ||
+        f.pregunta.toLowerCase().includes(pregunta)
+      );
+
+      if (item) {
+        respuestaHTML = `<table>
+          <tr><th>Nº</th><td>${item.numero}</td></tr>
+          <tr><th>Subvención</th><td>${item.subvencion}</td></tr>
+          <tr><th>Código</th><td>${item.codigo || '-'}</td></tr>
+          <tr><th>Respuesta</th><td>${item.respuesta}</td></tr>
+          <tr><th>Fuente</th><td>${item.fuente}</td></tr>
+        </table>`;
       }
-      setTimeout(() => appendChat('Bot', respuesta, 'bot'), 500);
+
+      setTimeout(() => appendChat('Bot', respuestaHTML, 'bot'), 500);
     }
   </script>
 </body>
