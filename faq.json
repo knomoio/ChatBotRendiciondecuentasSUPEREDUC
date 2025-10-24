@@ -1,0 +1,162 @@
+[
+  {
+    "numero": 1,
+    "subvencion": "SEP",
+    "pregunta": "¿Se puede imputar gasto de vestuario escolar?",
+    "codigo": "",
+    "respuesta": "No. Los recursos de la subvención escolar preferencial (SEP) no pueden utilizarse para vestuario escolar, ya que dicha categoría no corresponde al fin educativo definido en el convenio SEP.",
+    "fuente": "Manual de Cuentas 2025, pág. 18, ítem 21504"
+  },
+  {
+    "numero": 2,
+    "subvencion": "SEP",
+    "pregunta": "¿En qué código se imputan reparaciones menores de mobiliario?",
+    "codigo": "230305",
+    "respuesta": "Se utiliza el código 230305: “Reparaciones menores de infraestructura, mobiliario o equipamiento”. Esta cuenta es aplicable al marco general de rendición de recursos.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 3,
+    "subvencion": "General",
+    "pregunta": "¿Cuál es el plazo general de rendición de cuentas para los recursos del año anterior?",
+    "codigo": "",
+    "respuesta": "El plazo general para rendir los recursos del año anterior es hasta el 31 de marzo del año siguiente.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 4,
+    "subvencion": "SEP",
+    "pregunta": "¿Qué documentos son válidos para respaldar gastos con SEP?",
+    "codigo": "",
+    "respuesta": "Los documentos válidos incluyen facturas electrónicas, boletas de honorarios y demás documentos tributarios autorizados, respaldados en el libro de rendición correspondiente.",
+    "fuente": "Manual de Cuentas 2025, Capítulo IV (Honorarios)"
+  },
+  {
+    "numero": 5,
+    "subvencion": "FAEP",
+    "pregunta": "¿Se puede usar FAEP para pago de índole administrativo general fuera del establecimiento?",
+    "codigo": "",
+    "respuesta": "No, la subvención FAEP está destinada a fines de apoyo educativo directo al establecimiento. Gastos que no tienen vinculación directa con el fin educativo pueden quedar sin respaldo.",
+    "fuente": "Manual de Cuentas 2025, sección “Alcance”"
+  },
+  {
+    "numero": 6,
+    "subvencion": "JUNJI",
+    "pregunta": "¿Puede la subvención de la JUNJI cubrir remuneraciones de personal administrativo que no participa en la misión pedagógica principal?",
+    "codigo": "",
+    "respuesta": "No. Sólo el personal que participa directamente en la misión pedagógica del jardín infantil puede ser imputado a la subvención de JUNJI. El personal puramente administrativo debe imputarse a cuentas generales o del sostenedor, no a la subvención.",
+    "fuente": "Dictamen 0067"
+  },
+  {
+    "numero": 7,
+    "subvencion": "General",
+    "pregunta": "¿Cómo se maneja el saldo final por acreditar de una subvención?",
+    "codigo": "",
+    "respuesta": "El saldo final por acreditar es la suma de los saldos de las subvenciones que quedaron rendidos fuera de plazo o no rendidos. Si resulta negativa, no se realiza acreditación.",
+    "fuente": "Manual de Cuentas 2025, sección 6.3"
+  },
+  {
+    "numero": 8,
+    "subvencion": "SEP",
+    "pregunta": "¿La cuenta corriente del SEP debe tener certificado de saldo al 31 de diciembre?",
+    "codigo": "",
+    "respuesta": "Sí. La cuenta bancaria exclusiva del SEP debe estar registrada en el “Registro de Cuentas Bancarias (RCB)” al 31 de diciembre y contar con certificado de saldos.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 9,
+    "subvencion": "FAEP",
+    "pregunta": "¿Pueden los recursos FAEP financiar mobiliario nuevo para el aula?",
+    "codigo": "",
+    "respuesta": "Sí, siempre que el mobiliario esté vinculado directamente al fin educativo del establecimiento y la adquisición cumpla con los procedimientos de compra pública establecidos. Debe imputarse al código correspondiente de mobiliario y equipo en el Manual.",
+    "fuente": "Manual de Cuentas 2025, sección “Gastos” (parte mobiliario/equipamiento)"
+  },
+  {
+    "numero": 10,
+    "subvencion": "General",
+    "pregunta": "¿Cuál es la fuente normativa que aprueba el Manual de Cuentas 2025?",
+    "codigo": "",
+    "respuesta": "La Resolución Exenta Nº 184 de fecha 28 de febrero de 2025 de la Superintendencia de Educación, que aprueba el Manual de Cuentas para la Rendición de Recursos 2025.",
+    "fuente": "Resolución Exenta Nº 184 / 2025"
+  },
+  {
+    "numero": 11,
+    "subvencion": "SEP",
+    "pregunta": "¿Se puede imputar gasto de “comidas de alumnos” con recursos SEP?",
+    "codigo": "",
+    "respuesta": "No, los recursos SEP deben orientarse a fines pedagógicos y operativos del establecimiento; el gasto de “comidas de alumnos” podría requerir otra subvención o partida específica.",
+    "fuente": "Informe DIPRES análisis SEP"
+  },
+  {
+    "numero": 12,
+    "subvencion": "JUNJI",
+    "pregunta": "¿Un jardín infantil puede rendir la subvención JUNJI para viajes pedagógicos?",
+    "codigo": "",
+    "respuesta": "Solo si el viaje está directamente vinculado al cumplimiento de objetivos pedagógicos del jardín infantil, está aprobado en el PME y cumple con normativas de respaldo. De lo contrario, podría considerarse gasto no rendible.",
+    "fuente": "Manual de Cuentas 2025 y dictámenes sobre uso de subvenciones"
+  },
+  {
+    "numero": 13,
+    "subvencion": "FAEP",
+    "pregunta": "¿Los fondos FAEP pueden pagar software educativo/licencias?",
+    "codigo": "",
+    "respuesta": "Sí, si el software está vinculado al objetivo educativo del establecimiento y se justifica adecuadamente. Debe imputarse al ítem de “equipamiento/informática” dentro del manual.",
+    "fuente": "Manual de Cuentas 2025, sección equipos/licencias"
+  },
+  {
+    "numero": 14,
+    "subvencion": "General",
+    "pregunta": "¿Qué sucede si no se rinde una subvención en el plazo?",
+    "codigo": "",
+    "respuesta": "Si no se rinde la subvención en plazo, el saldo se considera “no rendido”, se genera un saldo por acreditar, el que debe ser acreditado según los criterios del Manual o revertido al Fisco.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 15,
+    "subvencion": "SEP",
+    "pregunta": "¿Se puede usar SEP para gastos de mantenimiento general (ej. jardinería, limpieza)?",
+    "codigo": "",
+    "respuesta": "Sí, siempre que estos gastos estén vinculados al funcionamiento del establecimiento y se justifiquen correctamente, no habiendo otra subvención que los contemple. Deben imputarse a la cuenta de funcionamiento/mantención.",
+    "fuente": "Informe DIPRES sobre SEP mantenimiento"
+  },
+  {
+    "numero": 16,
+    "subvencion": "JUNJI",
+    "pregunta": "¿La subvención de JUNJI puede financiar la construcción de un nuevo patio?",
+    "codigo": "",
+    "respuesta": "Sí, pero debe aprobarse previamente, estar justificado en el proyecto pedagógico del jardín, cumplir con normativa de inversiones y estar imputado al código de infraestructura correspondiente del Manual.",
+    "fuente": "Manual de Cuentas 2025, sección infraestructura"
+  },
+  {
+    "numero": 17,
+    "subvencion": "FAEP",
+    "pregunta": "¿Se puede imputar gasto de actividades extracurriculares fuera del horario escolar con fondos FAEP?",
+    "codigo": "",
+    "respuesta": "Solo si están claramente vinculadas al plan educativo del establecimiento, aprobadas en el PME y la subvención lo permite. El sostenedor debe respaldar adecuadamente.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 18,
+    "subvencion": "SEP",
+    "pregunta": "¿Puede la SEP financiar la compra de libros de texto?",
+    "codigo": "",
+    "respuesta": "Sí, si los libros están vinculados al cumplimiento del currículo del establecimiento y están contemplados en el PME. Deben imputarse al ítem de “materiales educativos” según el Manual.",
+    "fuente": "Manual de Cuentas 2025"
+  },
+  {
+    "numero": 19,
+    "subvencion": "General",
+    "pregunta": "¿La herramienta ChatBot debe actualizar la base normativa cómo y cuándo?",
+    "codigo": "",
+    "respuesta": "Es recomendable actualizar la base normativa **mensualmente** o cuando se publique un nuevo dictamen o manual. Llevar un registro de versiones es buena práctica.",
+    "fuente": "Proceso interno SLEP"
+  },
+  {
+    "numero": 20,
+    "subvencion": "General",
+    "pregunta": "¿Cómo debo proceder cuando una pregunta no está prevista en la base de datos del ChatBot?",
+    "codigo": "",
+    "respuesta": "El ChatBot debe indicar que la consulta se derivará al encargado de rendiciones o que se revisará la normativa. Proponer generar una “consulta especial” y actualizar la base de datos si aplica.",
+    "fuente": "Mejores prácticas interno ChatBot"
+  }
+]
