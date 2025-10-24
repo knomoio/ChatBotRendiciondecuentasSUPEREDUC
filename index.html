@@ -12,14 +12,15 @@
     .chat-entry { margin: 10px 0; }
     .user { font-weight: bold; color: #0055a5; }
     .bot { font-weight: bold; color: #22a622; }
-    .chat-form { display: flex; }
-    .chat-input { flex: 1; padding: 10px; font-size: 1em; border: 1px solid #ccc; border-radius: 5px 0 0 5px; }
-    .chat-submit { padding: 10px 20px; font-size: 1em; border: none; background: #0055a5; color: white; border-radius: 0 5px 5px 0; cursor: pointer; }
+    .chat-form { display: flex; gap: 8px; }
+    .chat-input { flex: 1; padding: 10px; font-size: 1em; border: 1px solid #ccc; border-radius: 5px; }
+    .chat-submit { padding: 10px 20px; font-size: 1em; border: none; background: #0055a5; color: white; border-radius: 5px; cursor: pointer; }
     .chat-submit:hover { background: #004080; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     table, th, td { border: 1px solid #ccc; }
     th, td { padding: 8px; text-align: left; }
     th { background: #f0f0f0; }
+    .note { font-size: 0.9em; color: #555; margin-top: 8px; }
   </style>
 </head>
 <body>
@@ -27,10 +28,12 @@
     <h2>Asistente de Rendiciones SLEP</h2>
     <div id="chat-log" class="chat-log"></div>
     <form id="chat-form" class="chat-form">
-      <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu consulta..." required />
+      <input type="text" id="chat-input" class="chat-input" placeholder="Escribe tu consulta (ej: vestuario escolar SEP, reparaciones mobiliario, plazo rendición)..." required />
       <button type="submit" class="chat-submit">Enviar</button>
     </form>
+    <div class="note">Tip: prueba con palabras clave como <em>vestuario SEP</em>, <em>reparaciones mobiliario</em>, <em>plazo rendición</em>.</div>
   </div>
+
   <script>
     const log = document.getElementById('chat-log');
     const form = document.getElementById('chat-form');
@@ -38,23 +41,24 @@
 
     let faqList = [];
 
-    // Cargar el archivo JSON con las preguntas frecuentes
-    fetch('data/faq.json')
-      .then(response => response.json())
+    // Cargar el JSON desde la raíz del repo público (GitHub Pages sirve la misma raíz)
+    fetch('faq.json')
+      .then(r => r.json())
       .then(json => {
         faqList = json;
+        console.log('FAQ cargadas:', faqList.length);
       })
       .catch(err => {
-        console.error('Error cargando FAQ:', err);
-        // Si no se carga, aún el bot puede funcionar con mensaje de “no disponible”
+        console.error('Error cargando faq.json:', err);
+        appendChat('Bot', 'No pude cargar la base de preguntas frecuentes (faq.json). Verifica la ruta del archivo en el repositorio.', 'bot');
       });
 
     form.onsubmit = e => {
       e.preventDefault();
       const preguntaRaw = input.value.trim();
-      const pregunta = preguntaRaw.toLowerCase();
+      if (!preguntaRaw) return;
       appendChat('Tú', preguntaRaw, 'user');
-      responder(pregunta);
+      responder(preguntaRaw);
       input.value = '';
     };
 
@@ -66,27 +70,73 @@
       log.scrollTop = log.scrollHeight;
     }
 
-    function responder(pregunta) {
-      let respuestaHTML = 'Lo siento, no tengo una respuesta para eso todavía. Consulta el Manual de Cuentas o contacta al encargado de rendiciones.';
+    // --- Utilidades de normalización y scoring ---
+    const STOPWORDS = new Set(['el','la','los','las','un','una','de','del','al','y','o','u','en','para','por','con','se','que','qué','cual','cuál','es','son','a','lo','su','sus','como','cómo','donde','dónde','cuando','cuándo','puede','pueden','imputar','gasto','pregunta']);
 
-      // Buscar coincidencia en faqList
-      const item = faqList.find(f =>
-        pregunta.includes(f.pregunta.toLowerCase()) ||
-        pregunta.includes(f.subvencion.toLowerCase()) ||
-        f.pregunta.toLowerCase().includes(pregunta)
-      );
+    function normalize(str) {
+      return (str || '')
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quitar tildes
+        .replace(/[^a-z0-9ñáéíóúü\s]/gi,' ') // quitar signos
+        .replace(/\s+/g,' ')
+        .trim();
+    }
 
-      if (item) {
-        respuestaHTML = `<table>
-          <tr><th>Nº</th><td>${item.numero}</td></tr>
-          <tr><th>Subvención</th><td>${item.subvencion}</td></tr>
-          <tr><th>Código</th><td>${item.codigo || '-'}</td></tr>
-          <tr><th>Respuesta</th><td>${item.respuesta}</td></tr>
-          <tr><th>Fuente</th><td>${item.fuente}</td></tr>
-        </table>`;
+    function tokens(str) {
+      return normalize(str)
+        .split(' ')
+        .filter(t => t && !STOPWORDS.has(t) && t.length >= 3);
+    }
+
+    function scoreItem(item, qTokens) {
+      const haystack = tokens(`${item.pregunta} ${item.subvencion} ${item.codigo||''} ${item.respuesta}`);
+      let overlap = 0;
+      const hay = new Set(haystack);
+      qTokens.forEach(t => { if (hay.has(t)) overlap++; });
+      // Bonus por match de palabras clave típicas
+      const txt = normalize(`${item.pregunta} ${item.respuesta}`);
+      if (txt.includes('vestuario') && qTokens.includes('vestuario')) overlap += 2;
+      if (txt.includes('reparacion') && (qTokens.includes('reparacion') || qTokens.includes('reparaciones'))) overlap += 2;
+      if (txt.includes('plazo') && qTokens.includes('plazo')) overlap += 2;
+      if (txt.includes('mobiliario') && qTokens.includes('mobiliario')) overlap += 1;
+      if (txt.includes('sep') && qTokens.includes('sep')) overlap += 1;
+      return overlap;
+    }
+
+    function responder(preguntaRaw) {
+      if (!faqList || faqList.length === 0) {
+        appendChat('Bot', 'La base de conocimiento aún no está disponible. Revisa que <code>faq.json</code> exista en la raíz del repositorio y que GitHub Pages haya actualizado.', 'bot');
+        return;
       }
 
-      setTimeout(() => appendChat('Bot', respuestaHTML, 'bot'), 500);
+      const qTokens = tokens(preguntaRaw);
+
+      // Encontrar el mejor match por puntaje
+      let best = null;
+      let bestScore = -1;
+      for (const item of faqList) {
+        const s = scoreItem(item, qTokens);
+        if (s > bestScore) { bestScore = s; best = item; }
+      }
+
+      // Umbral mínimo para considerar match aceptable
+      if (!best || bestScore < 2) {
+        appendChat('Bot',
+          'No tengo una respuesta directa para esa consulta. Intenta con otras palabras clave (ej: "vestuario SEP", "reparaciones mobiliario", "plazo rendición"). También puedes revisar el Manual de Cuentas en ptf.supereduc.cl.',
+          'bot'
+        );
+        return;
+      }
+
+      const respuestaHTML = `<table>
+        <tr><th>Nº</th><td>${best.numero}</td></tr>
+        <tr><th>Subvención</th><td>${best.subvencion}</td></tr>
+        <tr><th>Código</th><td>${best.codigo || '-'}</td></tr>
+        <tr><th>Respuesta</th><td>${best.respuesta}</td></tr>
+        <tr><th>Fuente</th><td>${best.fuente}</td></tr>
+      </table>`;
+
+      appendChat('Bot', respuestaHTML, 'bot');
     }
   </script>
 </body>
